@@ -14,6 +14,13 @@ window.onload = function() {
   actualizarLimiteEnPantalla();
 };
 
+//Funciones mias
+function restarDinero(num2) {
+  saldoCuenta = saldoCuenta - num2;
+}
+function sumarDinero(num1) {
+  saldoCuenta = saldoCuenta + num1;
+}
 //Funciones que tenes que completar
 function cambioLimite(num3) {
   if (num3 > saldoCuenta) {
@@ -25,42 +32,44 @@ function cambioLimite(num3) {
   }
 }
 function cambiarLimiteDeExtraccion() {
-  var limiteNuevo = limiteExtraccion;
+  var limite = limiteExtraccion;
   var limite = prompt("Ingrese el nuevo límite de extracción");
   limite = parseInt(limite);
   limiteExtraccion = cambioLimite(limite);
   actualizarLimiteEnPantalla();
 }
-
-function restarDinero(num2) {
-  if (num2 > saldoCuenta) {
-    alert("No tenes suficiente saldo");
-  } else {
-    saldoCuenta = saldoCuenta - num2;
-    return saldoCuenta;
-  }
-}
 function extraerDinero() {
   var saldoAnterior = saldoCuenta;
   var extraccion = prompt("Extraer dinero");
   extraccion = parseInt(extraccion);
-  saldoCuenta = restarDinero(extraccion);
-  alert(
-    "Su saldo anterior es $" +
-      saldoAnterior +
-      "\n Extracción $" +
-      extraccion +
-      "\n Su saldo actual es $" +
-      saldoCuenta
-  );
-  actualizarSaldoEnPantalla();
+  //validaciones
+  if (extraccion > saldoCuenta) {
+    alert("El monto ingresado es mayor al saldo de su cuenta");
+  } else if (extraccion > limiteExtraccion) {
+    alert(
+      "La cantidad de dinero que deseas extraer es mayor al limite de extracción"
+    );
+  } else if (extraccion % 100 != 0) {
+    alert("Solo puede extraer billetes de 100");
+  } else {
+    restarDinero(extraccion);
+    actualizarSaldoEnPantalla();
+    alert(
+      "Su saldo anterior es $" +
+        saldoAnterior +
+        "\n Extracción $" +
+        extraccion +
+        "\n Su saldo actual es $" +
+        saldoCuenta
+    );
+  }
 }
-
 function depositarDinero() {
   var saldoAnterior = saldoCuenta;
   var deposito = prompt("Depositar dinero");
   deposito = parseInt(deposito);
-  saldoCuenta = sumarDinero(deposito);
+  sumarDinero(deposito);
+  actualizarSaldoEnPantalla();
   alert(
     "Su saldo anterior es $" +
       saldoAnterior +
@@ -69,11 +78,6 @@ function depositarDinero() {
       "\n Su saldo actual es $" +
       saldoCuenta
   );
-  actualizarSaldoEnPantalla();
-}
-function sumarDinero(num1) {
-  saldoCuenta = saldoCuenta + num1;
-  return saldoCuenta;
 }
 
 function pagarServicio() {
